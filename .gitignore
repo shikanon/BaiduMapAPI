@@ -103,7 +103,7 @@ venv.bak/
 # mypy
 .mypy_cache/
 *.ipynb_checkpoints/
-data/
+data-cache/
 
 # virtual 
 venv/
