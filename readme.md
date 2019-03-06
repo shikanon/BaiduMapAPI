@@ -1,5 +1,4 @@
 # BaiduMapAPI
---------
 
 A Simple Python Baidu Map API Library, make easy for you when you want to use map data.
 
@@ -8,7 +7,6 @@ It is Python Baidu Map API Library. We encapsulate it, and make it more easy for
 这里是[中文文档](./readme_zh.md)
 
 ## Installation
---------
 
 You can install it via pip
 ```
@@ -23,7 +21,6 @@ $ python setup.py install
 ```
 
 ## Exmaple
---------
 
 获取全国街道的数据
 

@@ -33,4 +33,5 @@ setup(
     install_requires = __requires__,
     zip_safe = False,
     include_package_data = True,
+    data_files = [("BaiduMapAPI", ["BaiduMapAPI/data/BaiduMap_cityCode_1102.txt"])]
 )
