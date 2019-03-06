@@ -21,6 +21,10 @@ __requires__ = [
 ]
 
 
+with open("README.rst") as f:
+    __long_description__ = f.read()
+
+
 setup(
     name = __lib_name__,
     version = __lib_version__,
@@ -33,5 +37,6 @@ setup(
     install_requires = __requires__,
     zip_safe = False,
     include_package_data = True,
-    data_files = [("BaiduMapAPI", ["BaiduMapAPI/data/BaiduMap_cityCode_1102.txt"])]
+    data_files = [("BaiduMapAPI", ["BaiduMapAPI/data/BaiduMap_cityCode_1102.txt"])],
+    long_description = __long_description__
 )

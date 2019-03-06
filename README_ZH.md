@@ -1,18 +1,17 @@
 # BaiduMapAPI
 
-A Simple Python Baidu Map API Library, make easy for you when you want to use map data.
+这是一个非官方的百度地图API封装库。
 
-It is Python Baidu Map API Library. We encapsulate it, and make it more easy for you.
-
-这里是[中文文档](https://github.com/shikanon/BaiduMapAPI/README_ZH.md)
+This is [English Document](https://github.com/shikanon/BaiduMapAPI/README.md)
 
 ## Installation
 
-You can install it via pip
+pip 安装
 ```
 $ pip install BaiduMapAPI
 ```
-or clone it and install it
+
+下载编译源码
 ```
 $ git clone https://github.com/shikanon/BaiduMapAPI.git
 $ cd BaiduMapAPI
@@ -22,20 +21,7 @@ $ python setup.py install
 
 ## Exmaple
 
-Query the transit info
-
-```
-direction = MapDirection(AK, SK)
-origin = "23.137903,113.34348"
-destination = "22.544383,114.062203"
-coord_type = "wgs84"
-content = direction.transit(origin, destination, coord_type=coord_type)
-result = json.loads(content)
-print(result)
-```
-
-
-This exmaple of getting all street of china.
+获取全国街道的数据
 
 ```
 df = pd.read_csv("http://baidumapapi.shikanon.com/data/ChUnit2017.csv", encoding="utf-8")

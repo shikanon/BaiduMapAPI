@@ -1,26 +1,12 @@
-# BaiduMapAPI
+baidumapapi
+============
 
 A Simple Python Baidu Map API Library, make easy for you when you want to use map data.
 
 It is Python Baidu Map API Library. We encapsulate it, and make it more easy for you.
 
-这里是[中文文档](https://github.com/shikanon/BaiduMapAPI/README_ZH.md)
-
-## Installation
-
-You can install it via pip
-```
-$ pip install BaiduMapAPI
-```
-or clone it and install it
-```
-$ git clone https://github.com/shikanon/BaiduMapAPI.git
-$ cd BaiduMapAPI
-$ pip install -r requirements.txt
-$ python setup.py install
-```
-
-## Exmaple
+Exmaple
+------------
 
 Query the transit info
 
