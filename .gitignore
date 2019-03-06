@@ -102,3 +102,11 @@ venv.bak/
 
 # mypy
 .mypy_cache/
+*.ipynb_checkpoints/
+data/
+
+# virtual 
+venv/
+
+# editor
+.vscode/
