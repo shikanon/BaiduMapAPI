@@ -7,9 +7,9 @@ from setuptools import Command, find_packages, setup
 
 
 __lib_name__ = "BaiduMapAPI"
-__lib_version__ = "0.1"
+__lib_version__ = "0.1.0"
 __description__ = "The Package of Baidu Map, with unofficial"
-__url__ = "http://baidumapapi.shikanon.com/"
+__url__ = "https://github.com/shikanon/BaiduMapAPI"
 __author__ = "shikanon"
 __author_email__ = "account@shikanon.com"
 __license__ = "MIT"
