@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*- 
 import BaiduMapAPI
 import requests
+import json
 import time
 import os
 
@@ -8,6 +9,8 @@ from BaiduMapAPI import checkAK
 from BaiduMapAPI import common
 from BaiduMapAPI.globals import HOST
 
+__all__ = ['APIBase', 'MapDirection', 'OverseasDirection', 'OverseasDirection', 
+            'RouteMatrix', 'SearchPlace', 'Geocoder']
 
 class APIBase:
     '''
@@ -38,11 +41,20 @@ class MapDirection(APIBase):
 
 
     def transit(self, origin, destination, **kwargs):
-        '''
-        origin : string, include "latitude,longitude", 
-        for exmaple: guangzhou coordinate value is "23.137903,113.34348",
-        destination : string, include "latitude,longitude", 
-        for exmaple: guangzhou coordinate value is "23.137903,113.34348",
+        '''get Public transit route direction.
+
+        Parameters:
+
+            origin : string, include "latitude,longitude", 
+            for exmaple: guangzhou coordinate value is "23.137903,113.34348",  
+                    
+            destination : string, include "latitude,longitude", 
+            for exmaple: guangzhou coordinate value is "23.137903,113.34348",
+    
+        Returns:
+
+            content: string, the content of get from baidu API
+
         site: http://lbsyun.baidu.com/index.php?title=webapi/direction-api-v2
         '''
         urlPath = "/direction/v2/transit"
@@ -54,10 +66,20 @@ class MapDirection(APIBase):
 
     def riding(self, origin, destination, **kwargs):
         '''
-        origin : string, include "latitude,longitude", 
-        for exmaple: guangzhou coordinate value is "23.137903,113.34348",
-        destination : string, include "latitude,longitude", 
-        for exmaple: guangzhou coordinate value is "23.137903,113.34348",
+        get riding route direction.
+
+        parameter:
+
+            origin : string, include "latitude,longitude", 
+            for exmaple: guangzhou coordinate value is "23.137903,113.34348",
+
+            destination : string, include "latitude,longitude", 
+            for exmaple: guangzhou coordinate value is "23.137903,113.34348",
+        
+        Returns:
+
+            content: string, the content of get from baidu API
+
         site: http://lbsyun.baidu.com/index.php?title=webapi/direction-api-v2
         '''
         urlPath = "/direction/v2/riding"
@@ -69,10 +91,20 @@ class MapDirection(APIBase):
     
     def driving(self, origin, destination, **kwargs):
         '''
-        origin : string, include "latitude,longitude", 
-        for exmaple: guangzhou coordinate value is "23.137903,113.34348",
-        destination : string, include "latitude,longitude", 
-        for exmaple: guangzhou coordinate value is "23.137903,113.34348",
+        get driving route direction.
+
+        parameter:
+
+            origin : string, include "latitude,longitude", 
+            for exmaple: guangzhou coordinate value is "23.137903,113.34348",
+
+            destination : string, include "latitude,longitude", 
+            for exmaple: guangzhou coordinate value is "23.137903,113.34348",
+
+        Returns:
+
+            content: string, the content of get from baidu API
+
         site: http://lbsyun.baidu.com/index.php?title=webapi/direction-api-v2
         '''
         urlPath = "/direction/v2/driving"
@@ -101,10 +133,20 @@ class OverseasDirection(APIBase):
 
     def driving(self, origin, destination, **kwargs):
         '''
-        origin : string, include "latitude,longitude", 
-        for exmaple: guangzhou coordinate value is "23.137903,113.34348",
-        destination : string, include "latitude,longitude", 
-        for exmaple: guangzhou coordinate value is "23.137903,113.34348",
+        get driving route direction.
+
+        parameter:
+
+            origin : string, include "latitude,longitude", 
+            for exmaple: guangzhou coordinate value is "23.137903,113.34348",
+
+            destination : string, include "latitude,longitude", 
+            for exmaple: guangzhou coordinate value is "23.137903,113.34348",
+
+        Returns:
+
+            content: string, the content of get from baidu API
+
         site: http://lbsyun.baidu.com/index.php?title=webapi/direction-api-abroad
         '''
         urlPath = "/direction_abroad/v1/driving"
@@ -116,10 +158,20 @@ class OverseasDirection(APIBase):
 
     def walking(self, origin, destination, **kwargs):
         '''
-        origin : string, include "latitude,longitude", 
-        for exmaple: guangzhou coordinate value is "23.137903,113.34348",
-        destination : string, include "latitude,longitude", 
-        for exmaple: guangzhou coordinate value is "23.137903,113.34348",
+        get people walking route direction.
+
+        parameter:
+
+            origin : string, include "latitude,longitude", 
+            for exmaple: guangzhou coordinate value is "23.137903,113.34348",
+
+            destination : string, include "latitude,longitude", 
+            for exmaple: guangzhou coordinate value is "23.137903,113.34348",
+        
+        Returns:
+
+            content: string, the content of get from baidu API
+
         site: http://lbsyun.baidu.com/index.php?title=webapi/direction-api-abroad
         '''
         urlPath = "/direction_abroad/v1/walking"
@@ -131,10 +183,20 @@ class OverseasDirection(APIBase):
 
     def transit(self, origin, destination, **kwargs):
         '''
-        origin : string, include "latitude,longitude", 
-        for exmaple: guangzhou coordinate value is "23.137903,113.34348",
-        destination : string, include "latitude,longitude", 
-        for exmaple: guangzhou coordinate value is "23.137903,113.34348",
+        get Public transit route direction.
+
+        parameter:
+
+            origin: string, include "latitude,longitude", 
+            for exmaple: guangzhou coordinate value is "23.137903,113.34348",
+            
+            destination: string, include "latitude,longitude", 
+            for exmaple: guangzhou coordinate value is "23.137903,113.34348",
+
+        Returns:
+
+            content: string, the content of get from baidu API
+
         site: http://lbsyun.baidu.com/index.php?title=webapi/direction-api-abroad
         '''
         urlPath = "/direction_abroad/v1/transit"
@@ -167,10 +229,20 @@ class RouteMatrix(APIBase):
 
     def driving(self, origins, destinations, **kwargs):
         '''
-        origin : string, include "latitude,longitude|latitude,longitude|latitude,longitude", 
-        for exmaple: guangzhou coordinate value is "23.137903,113.34348|40.063597,116.364973",
-        destination : string, include "latitude,longitude|latitude,longitude|latitude,longitude", 
-        for exmaple: guangzhou coordinate value is "23.137903,113.34348|40.063597,116.364973",
+        get driving route maxtrix.
+
+        parameter:
+
+            origin : string, include "latitude,longitude|latitude,longitude|latitude,longitude", 
+            for exmaple: guangzhou coordinate value is "23.137903,113.34348|40.063597,116.364973",
+
+            destination : string, include "latitude,longitude|latitude,longitude|latitude,longitude", 
+            for exmaple: guangzhou coordinate value is "23.137903,113.34348|40.063597,116.364973",
+        
+        Returns:
+
+            content: string, the content of get from baidu API
+
         site: http://lbsyun.baidu.com/index.php?title=webapi/route-matrix-api-v2
         '''
         urlPath = "/routematrix/v2/driving"
@@ -182,10 +254,20 @@ class RouteMatrix(APIBase):
 
     def riding(self, origins, destinations, **kwargs):
         '''
-        origin : string, include "latitude,longitude|latitude,longitude|latitude,longitude", 
-        for exmaple: guangzhou coordinate value is "23.137903,113.34348|40.063597,116.364973",
-        destination : string, include "latitude,longitude|latitude,longitude|latitude,longitude", 
-        for exmaple: guangzhou coordinate value is "23.137903,113.34348|40.063597,116.364973",
+        get people riding route direction.
+
+        parameter:
+
+            origin : string, include "latitude,longitude|latitude,longitude|latitude,longitude", 
+            for exmaple: guangzhou coordinate value is "23.137903,113.34348|40.063597,116.364973",
+
+            destination : string, include "latitude,longitude|latitude,longitude|latitude,longitude", 
+            for exmaple: guangzhou coordinate value is "23.137903,113.34348|40.063597,116.364973",
+        
+        Returns:
+
+            content: string, the content of get from baidu API
+
         site: http://lbsyun.baidu.com/index.php?title=webapi/route-matrix-api-v2
         '''
         urlPath = "/routematrix/v2/riding"
@@ -197,10 +279,20 @@ class RouteMatrix(APIBase):
 
     def walking(self, origins, destinations, **kwargs):
         '''
-        origin : string, include "latitude,longitude|latitude,longitude|latitude,longitude", 
-        for exmaple: guangzhou coordinate value is "23.137903,113.34348|40.063597,116.364973",
-        destination : string, include "latitude,longitude|latitude,longitude|latitude,longitude", 
-        for exmaple: guangzhou coordinate value is "23.137903,113.34348|40.063597,116.364973",
+        get people walking route direction.
+
+        parameter:
+
+            origin : string, include "latitude,longitude|latitude,longitude|latitude,longitude", 
+            for exmaple: guangzhou coordinate value is "23.137903,113.34348|40.063597,116.364973",
+                
+            destination : string, include "latitude,longitude|latitude,longitude|latitude,longitude", 
+            for exmaple: guangzhou coordinate value is "23.137903,113.34348|40.063597,116.364973",
+         
+        Returns:
+
+            content: string, the content of get from baidu API
+
         site: http://lbsyun.baidu.com/index.php?title=webapi/route-matrix-api-v2
         '''
         urlPath = "/routematrix/v2/walking"
@@ -232,14 +324,52 @@ class SearchPlace(APIBase):
         return payload
     
     def listAllRegion(self):
+        '''
+        list all the region info which can use.
+        '''
         return self._allregion
+    
+    def queryBatchPlaceCoord(self, places):
+        '''
+        query the batch places' coordination.
+
+        Parameters:
+
+            places: dict, {"region": "place name"}, for exmaple: {"广州": "中信广场"}
+
+        Returns:
+
+            content: the coordinates, [(lat, lng),(lat, lng),...]
+
+        '''
+        for region in places:
+            content = self.searchRegion(places[region], region, output="json")
+            content = json.loads(content)
+            if "status" not in content or "results" not in content:
+                return None
+            if content["status"] == 0:
+                result = content["results"]
+                # get the frist result, because the frist one is most likely.
+                lat = result[0]["location"]["lat"]
+                lng = result[0]["location"]["lng"]
+                yield lat, lng
 
 
     def searchRegion(self, query, region, **kwargs):
         '''
-        query : string, for exmaple: "银行",
-        region : string, is city name or city code. If you want to know the
-        all places, you can use listAllRegion to list them. 
+        search POI with the region.
+
+        parameter:
+
+            query : string, for exmaple: "银行",
+
+            region : string, is city name or city code. If you want to know the
+            all places, you can use listAllRegion to list them. 
+        
+        Returns:
+
+            content: string, the content of get from baidu API
+
         site: http://lbsyun.baidu.com/index.php?title=webapi/guide/webservice-placeapi
         '''
         urlPath = "/place/v2/search"
@@ -256,17 +386,25 @@ class SearchPlace(APIBase):
 
     def fuzzySearchRegion(self, query, region, city_limit="true", **kwargs):
         '''
-        query : string, for exmaple: "银行",
-        region : string, is city name or city code. If you want to know the
-        all places, you can use listAllRegion to list them. 
+        search POI with the fuzzy region when you cannot ensure the region.
+        
+        parameter:
+
+            query : string, for exmaple: "银行",
+            
+            region : string, is city name or city code. If you want to know the
+            all places, you can use listAllRegion to list them. 
+
+        Returns:
+
+            content: string, the content of get from baidu API
+
         site: http://lbsyun.baidu.com/index.php?title=webapi/place-suggestion-api
         '''
         urlPath = "/place/v2/suggestion"
         if "$" in  query:
             raise ValueError("Search Region API cann't support multi key query!")
         payload = self._getPayload(query, **kwargs)
-        if region not in self._allregion:
-            raise ValueError("region 输入不对")
         payload["region"] = region
         payload["city_limit"] = city_limit
         content = self.encry.get(HOST, urlPath, payload)
@@ -276,9 +414,19 @@ class SearchPlace(APIBase):
 
     def searchCircularArea(self, query, location, **kwargs):
         '''
-        query : string, separate with `$` , for exmaple: "银行$酒店",
-        location : string, include "latitude,longitude", 
-        for exmaple: guangzhou coordinate value is "23.137903,113.34348",
+        search POI with the circular area, you provide the coordinate of center.
+        
+        parameter:
+
+            query : string, separate with `$` , for exmaple: "银行$酒店",
+
+            location : string, include "latitude,longitude", 
+            for exmaple: guangzhou coordinate value is "23.137903,113.34348",
+
+        Returns:
+
+            content: string, the content of get from baidu API
+
         site: http://lbsyun.baidu.com/index.php?title=webapi/guide/webservice-placeapi
         '''
         urlPath = "/place/v2/search"
@@ -292,9 +440,19 @@ class SearchPlace(APIBase):
 
     def searchRectangularArea(self, query, bounds, **kwargs):
         '''
-        query : string, separate with `$` , for exmaple: "银行$酒店",
-        bounds : string, include "min(latitude),min(longitude),max(latitude),max(longitude)", 
-        for exmaple: "23.137903,113.34348,40.063597,116.364973",
+        search POI with the rectangular area.
+        
+        parameter:
+
+            query : string, separate with `$` , for exmaple: "银行$酒店",
+
+            bounds : string, include "min(latitude),min(longitude),max(latitude),max(longitude)", 
+            for exmaple: "23.137903,113.34348,40.063597,116.364973",
+            
+        Returns:
+
+            content: string, the content of get from baidu API
+
         site: http://lbsyun.baidu.com/index.php?title=webapi/guide/webservice-placeapi
         '''
         urlPath = "/place/v2/search"
@@ -315,9 +473,18 @@ class Geocoder(APIBase):
 
     def geoEncode(self, address, latest_admin_data=1, **kwargs):
         '''
-        address : string, for exmaple: "北京市海淀区上地十街10号",
-        latest_admin : int, Whether this parameter can access the latest data, 1 means use lastest 
-        administrative area data, 0 will not.
+        
+        Parameters:
+
+            address : string, for exmaple: "北京市海淀区上地十街10号",
+
+            latest_admin : int, Whether this parameter can access the latest data, 1 means use lastest 
+            administrative area data, 0 will not.
+                    
+        Returns:
+
+            content: string, the content of get from baidu API
+
         site: http://lbsyun.baidu.com/index.php?title=webapi/guide/webservice-geocoding
         '''
         urlPath = "/geocoder/v2/"
@@ -331,9 +498,18 @@ class Geocoder(APIBase):
 
     def geoDecode(self, location, latest_admin_data=1, **kwargs):
         '''
-        location : string or tuple, for exmaple: "38.76623,116.43213",
-        latest_admin : int, Whether this parameter can access the latest data, 1 means use lastest 
-        administrative area data, 0 will not.
+        
+        Parameters:
+
+            location : string or tuple, for exmaple: "38.76623,116.43213",
+
+            latest_admin : int, Whether this parameter can access the latest data, 1 means use lastest 
+            administrative area data, 0 will not.
+                    
+        Returns:
+
+            content: string, the content of get from baidu API
+
         site: http://lbsyun.baidu.com/index.php?title=webapi/guide/webservice-geocoding
         '''
         urlPath = "/geocoder/v2/"
@@ -363,11 +539,21 @@ class CoordTrans(APIBase):
     
     def transform(self, coords, origin, target, **kwargs):
         '''
-        coords : string, include "latitude,longitude;latitude,longitude;latitude,longitude", 
-        for exmaple:  "23.137903,113.34348;40.063597,116.364973",
-        origin : int, include 1: WGS84; 2: sougou map; 3: google map; 4: metric coordinates of google map;
-        5: baidu map; 6: metric coordinates of baidu map; 7: mapbar; 8: 51 map , 
-        target : int, include 3: GCJ02; 4:  metric coordinates of GCJ02; 5: bd09ll; 6: bd09mc
+        
+        Parameters:
+
+            coords : string, include "latitude,longitude;latitude,longitude;latitude,longitude", 
+            for exmaple:  "23.137903,113.34348;40.063597,116.364973",
+
+            origin : int, include 1: WGS84; 2: sougou map; 3: google map; 4: metric coordinates of google map;
+            5: baidu map; 6: metric coordinates of baidu map; 7: mapbar; 8: 51 map , 
+
+            target : int, include 3: GCJ02; 4:  metric coordinates of GCJ02; 5: bd09ll; 6: bd09mc
+                        
+        Returns:
+
+            content: string, the content of get from baidu API
+
         site: http://lbsyun.baidu.com/index.php?title=webapi/guide/changeposition
         '''
         urlPath = "/geoconv/v1/"
@@ -387,8 +573,17 @@ class TrafficQuery(APIBase):
 
     def query(self, road_name, city, nolog=False):
         '''
-        query the road condition with read-time.
-        road_name: string, for example "北五环", "信息路"
+        
+        Parameters:
+
+            query the road condition with read-time.
+            
+            road_name: string, for example "北五环", "信息路"
+                    
+        Returns:
+
+            content: string, the content of get from baidu API
+
         '''
         urlPath = "/traffic/v1/road"
         payload = {"road_name": road_name, "city": city, "ak": self.ak, "timestamp": int(time.time())}

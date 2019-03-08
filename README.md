@@ -1,5 +1,7 @@
 # BaiduMapAPI
 
+Language: [English](https://github.com/shikanon/BaiduMapAPI/README.md) | [中文](https://github.com/shikanon/BaiduMapAPI/README_ZH.md)
+
 A Simple Python Baidu Map API Library, make easy for you when you want to use map data.
 
 It is Python Baidu Map API Library. We encapsulate it, and make it more easy for you.

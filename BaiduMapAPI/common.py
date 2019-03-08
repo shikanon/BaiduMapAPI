@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*- 
 
+__all__ = ["convertCoord", "convertBatchCoord", "expandUp"]
+
 def convertCoord(coord):
     if (isinstance(coord, tuple) or isinstance(coord, list)) and len(coord) == 2:
         return str(coord[0]) + "," + str(coord[1])

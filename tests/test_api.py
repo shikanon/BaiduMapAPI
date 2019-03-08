@@ -68,6 +68,18 @@ def test_SearchPlace():
     result = json.loads(content)
     assert result["status"] == 0
 
+    # 测试批量百度坐标查询
+    places = {
+        "香港":"香港国际机场", "广州": "广州白云国际机场", 
+        "深圳":"深圳宝安国际机场", "珠海":"珠海金湾国际机场",
+        "澳门":"澳门国际机场", "佛山":"佛山沙堤机场", 
+        "惠州":"惠州平潭机场"
+    }
+    result = search.queryBatchPlaceCoord(places)
+    result = list(result)
+    assert len(result) == 7
+    assert len(result[0]) == 2
+
 
 def test_Geocoder():
     geocoder = Geocoder(AK, SK)
