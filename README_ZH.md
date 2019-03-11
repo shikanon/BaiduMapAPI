@@ -1,10 +1,10 @@
 # BaiduMapAPI
 
-Language: [English](https://github.com/shikanon/BaiduMapAPI/README.md) | [中文](https://github.com/shikanon/BaiduMapAPI/README_ZH.md)
+Language: [English](https://github.com/shikanon/BaiduMapAPI/blob/master/README.md) | [中文](https://github.com/shikanon/BaiduMapAPI/blob/master/README_ZH.md)
 
 这是一个非官方的百度地图API封装库。
 
-This is [English Document](https://github.com/shikanon/BaiduMapAPI/README.md)
+This is [English Document](https://github.com/shikanon/BaiduMapAPI/blob/master/README.md)
 
 ## Installation
 
