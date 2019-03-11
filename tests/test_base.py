@@ -10,7 +10,7 @@ def test_TransitObject():
         test_data = json.load(fr)
     trans = TransitObject()
     trans.parse(test_data)
-    assert trans.TOTAL_LINES == 99
+    assert trans.total_line == 99
     df = trans.to_dataframe()
     assert len(df) == 10
     df.to_csv("test.csv",encoding="utf-8")
