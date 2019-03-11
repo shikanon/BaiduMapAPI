@@ -5,6 +5,7 @@ import pytest
 
 from .constant import AK, SK, AK_whitelist
 from BaiduMapAPI.api import MapDirection, RouteMatrix, SearchPlace, Geocoder, CoordTrans
+from BaiduMapAPI.base import POI
 
 def test_MapDirection():
     direction = MapDirection(AK, SK)
@@ -57,14 +58,14 @@ def test_SearchPlace():
     result = json.loads(content)
     assert result["status"] == 0
     
-    POI = "银行$酒店"
+    poi = "银行$酒店"
     location = "23.137903,113.34348"
-    content = search.searchCircularArea(query=POI, location=location, output="json")
+    content = search.searchCircularArea(query=poi, location=location, output="json")
     result = json.loads(content)
     assert result["status"] == 0
 
     bounds = "23.137903,113.34348,40.063597,116.364973"
-    content = search.searchRectangularArea(query=POI, bounds=bounds, output="json")
+    content = search.searchRectangularArea(query=poi, bounds=bounds, output="json")
     result = json.loads(content)
     assert result["status"] == 0
 
@@ -79,6 +80,11 @@ def test_SearchPlace():
     result = list(result)
     assert len(result) == 7
     assert len(result[0]) == 2
+
+    # 测试 search 方法
+    pois = search.search(query, region=region)
+    for p in pois:
+        assert isinstance(p, POI)
 
 
 def test_Geocoder():

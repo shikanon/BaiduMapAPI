@@ -8,6 +8,7 @@ import os
 from BaiduMapAPI import checkAK
 from BaiduMapAPI import common
 from BaiduMapAPI.globals import HOST
+from BaiduMapAPI.base import POI
 
 __all__ = ['APIBase', 'MapDirection', 'OverseasDirection', 'OverseasDirection', 
             'RouteMatrix', 'SearchPlace', 'Geocoder']
@@ -461,6 +462,76 @@ class SearchPlace(APIBase):
         content = self.encry.get(HOST, urlPath, payload)
         print("search rectangular area URL: ", self.encry.url)
         return content
+    
+
+    def search(self, query, **kwargs):
+        '''
+        search API for human, you can use three type, for bounds to search, or
+        for location to search, or for region to search
+        parameter:
+
+            query : string, separate with `$` , for exmaple: "银行$酒店",
+
+            query_type: string, use 'searchRegion' , 'searchCircularArea', or 'searchRectangularArea'
+            
+        Returns:
+
+            POIs: list, include a list of POI object
+
+        '''
+        if "query_type" in kwargs:
+            query_type = kwargs["query_type"] 
+            del kwargs["query_type"]
+        else:
+            if "region" in kwargs:
+                query_type = "region"
+            elif "location" in kwargs:
+                query_type = "circular"
+            elif "bounds" in kwargs:
+                query_type = "rectangular"
+            else:
+                raise ValueError("Unkonw query_type, please input the parmarter query_type!")
+
+        kwargs["output"] = "json"
+        if query_type == "region" and "region" in kwargs:
+            region = kwargs["region"]
+            del kwargs["region"]
+            response = self.searchRegion(query, region, **kwargs)
+        elif query_type == "circular" and "location" in kwargs:
+            location = kwargs["location"]
+            del kwargs["location"]
+            response = self.searchCircularArea(query, location, **kwargs)
+        elif query_type == "rectangular" and "bounds" in kwargs:
+            bounds = kwargs["bounds"]
+            del kwargs["bounds"]
+            response = self.searchRectangularArea(query, bounds, **kwargs)
+        else:
+            raise ValueError("Can not find region, or circular, or bounds, you must provide one of them!")
+        
+        # parse data
+        response = json.loads(response)
+        if "status" not in response:
+            raise IndexError("Failed for crawler data from this url: %s"%self.encry.url)
+        if "results" not in response:
+            raise IndexError("Failed find result filed in this url: %s"%self.encry.url)
+        results = response["results"]
+
+        POIs = []
+        for r in results:
+            p = POI(
+                uid=r["uid"],
+                name=r["name"],
+                address=r["address"],
+                province=r["province"],
+                city=r["city"],
+                area=r["area"],
+                lat=r["location"]["lat"],
+                lng=r["location"]["lng"],
+                )
+            POIs.append(p)
+        return POIs
+
+
 
 
 
