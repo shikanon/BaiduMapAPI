@@ -24,30 +24,33 @@ targets_name = {
 
 place = SearchPlace(AK, SK)
 
-for name in targets_name:
-    pois = place.search(targets_name[name], region=name)
-    poi = pois[0]
-
 dirction = MapDirection(AK, SK)
-
-loc = poi.get_location()
 
 fw = open("transit_plane_result.csv", "w", encoding="utf-8")
 fw.write("origin\t target\t distance\t duration\t toll \n")
 
-for i in origins_data.index:
-    obj = TransitObject()
-    coords = (origins_data["lat"][i],origins_data["lng"][i])
-    # 火车
-    content = dirction.transit(loc, coords, tactics_incity=4, trans_type_intercity=1)
-    content = json.loads(content)
-    obj.parse(content)
-    origin = origins_data["详细地址"][i]
-    target = targets_name[name]
-    route = obj.routes[0]
-    route = route.to_dict()
-    result = "\t".join(str(r) for r in route.values()) + "\n"
-    fw.write(result)
+for name in targets_name:
+    pois = place.search(targets_name[name], region=name)
+    poi = pois[0]
+
+    loc = poi.get_location()
+
+    for i in origins_data.index:
+        obj = TransitObject()
+        coords = (round(origins_data["lat"][i],5),round(origins_data["lng"][i],5))
+        # 飞机
+        content = dirction.transit(loc, coords, tactics_incity=4, trans_type_intercity=1)
+        content = json.loads(content)
+        if "status" in content and content["status"] == 0:
+            obj.parse(content)
+            origin = origins_data["详细地址"][i]
+            target = targets_name[name]
+            if len(obj.routes)==0:
+                break
+            route = obj.routes[0]
+            route = route.to_dict()
+            result = "\t".join(str(r) for r in route.values()) + "\n"
+            fw.write(result)
 
 
 fw.close()

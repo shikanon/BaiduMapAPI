@@ -33,7 +33,7 @@ class URLEncryption:
         sn = hashlib.md5(urllib.parse.quote_plus(rawStr).encode("utf-8")).hexdigest()
         return sn
 
-    def get(self, host, urlPath, payload):
+    def get(self, host, urlPath, payload, retry=2):
         '''
         host: string, example: "http://api.map.baidu.com"
         urlPath : string , exmaple: "/geocoder/v2/",
@@ -42,7 +42,16 @@ class URLEncryption:
         '''
         sn = self.encryption(urlPath, payload)
         payload["sn"] = sn
-        r = requests.get(host + urlPath, params=payload)
+        for i in range(retry):
+            try:
+                r = requests.get(host + urlPath, params=payload)
+                break
+            except requests.exceptions.ConnectionError as e:
+                print("retry %s"%(host + urlPath))
+                if i == (retry - 1):
+                    raise e
+            except Exception as e:
+                raise e
         self.url = r.url
         return r.content
 

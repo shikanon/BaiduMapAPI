@@ -525,8 +525,8 @@ class SearchPlace(APIBase):
                 province=r["province"],
                 city=r["city"],
                 area=r["area"],
-                lat=r["location"]["lat"],
-                lng=r["location"]["lng"],
+                lat=round(r["location"]["lat"],5),
+                lng=round(r["location"]["lng"],5),
                 )
             POIs.append(p)
         return POIs
