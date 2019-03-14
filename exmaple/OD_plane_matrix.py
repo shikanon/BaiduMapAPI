@@ -27,7 +27,7 @@ place = SearchPlace(AK, SK)
 dirction = MapDirection(AK, SK)
 
 fw = open("transit_plane_result.csv", "w", encoding="utf-8")
-fw.write("origin\t target\t distance\t duration\t toll \n")
+fw.write("origin\t target\t distance\t duration\t price\t vehicle\t description \n")
 
 for name in targets_name:
     pois = place.search(targets_name[name], region=name)
@@ -45,11 +45,12 @@ for name in targets_name:
             obj.parse(content)
             origin = origins_data["详细地址"][i]
             target = targets_name[name]
+            result = str(origin) + "\t" +str(target) 
             if len(obj.routes)==0:
                 break
             route = obj.routes[0]
             route = route.to_dict()
-            result = "\t".join(str(r) for r in route.values()) + "\n"
+            result = result + "\t" + "\t".join(str(r) for r in route.values()) + "\n"
             fw.write(result)
 
 
