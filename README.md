@@ -27,6 +27,9 @@ $ python setup.py install
 Query the transit info
 
 ```
+import json
+from BaiduMapAPI.api import MapDirection
+
 direction = MapDirection(AK, SK)
 origin = "23.137903,113.34348"
 destination = "22.544383,114.062203"
@@ -40,6 +43,11 @@ print(result)
 This exmaple of getting all street of china.
 
 ```
+import json
+import pandas as pd
+
+from BaiduMapAPI.api import SearchPlace, searchRegion
+
 df = pd.read_csv("http://baidumapapi.shikanon.com/data/ChUnit2017.csv", encoding="utf-8")
 df["lat"] = 0.0
 df["lng"] = 0.0

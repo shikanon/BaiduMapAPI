@@ -20,6 +20,8 @@ Welcome to BaiduMapAPI's documentation!
 :doc:`dataset`
     公共数据接口
 
+:doc:`base`
+    基础对象接口
 
 
 

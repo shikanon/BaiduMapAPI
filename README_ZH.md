@@ -23,9 +23,28 @@ $ python setup.py install
 
 ## Exmaple
 
+搜索所有的交通线路
+```
+import json
+from BaiduMapAPI.api import MapDirection
+
+direction = MapDirection(AK, SK)
+origin = "23.137903,113.34348"
+destination = "22.544383,114.062203"
+coord_type = "wgs84"
+content = direction.transit(origin, destination, coord_type=coord_type)
+result = json.loads(content)
+print(result)
+```
+
 获取全国街道的数据
 
 ```
+import json
+import pandas as pd
+
+from BaiduMapAPI.api import SearchPlace, searchRegion
+
 df = pd.read_csv("http://baidumapapi.shikanon.com/data/ChUnit2017.csv", encoding="utf-8")
 df["lat"] = 0.0
 df["lng"] = 0.0
