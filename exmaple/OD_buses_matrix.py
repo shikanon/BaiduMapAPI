@@ -41,17 +41,19 @@ for name in targets_name:
         # 巴士
         content = dirction.transit(loc, coords, tactics_incity=0, trans_type_intercity=2)
         content = json.loads(content)
+        origin = origins_data["详细地址"][i]
+        target = targets_name[name]
+        result = str(origin) + "\t" +str(target) 
         if "status" in content and content["status"] == 0:
             obj.parse(content)
-            origin = origins_data["详细地址"][i]
-            target = targets_name[name]
-            result = str(origin) + "\t" +str(target) 
             if len(obj.routes)==0:
                 break
             route = obj.routes[0]
             route = route.to_dict()
             result = result + "\t" + "\t".join(str(r) for r in route.values()) + "\n"
             print(result)
+            fw.write(result)
+        else:
             fw.write(result)
 
 

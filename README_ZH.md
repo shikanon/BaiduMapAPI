@@ -4,7 +4,7 @@ Language: [English](https://github.com/shikanon/BaiduMapAPI/blob/master/README.m
 
 这是一个非官方的百度地图API封装库。
 
-This is [English Document](https://github.com/shikanon/BaiduMapAPI/blob/master/README.md)
+这里是他的 [中文文档](http://baidumapapi.shikanon.com/doc/)
 
 ## Installation
 

@@ -3,28 +3,17 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-Welcome to BaiduMapAPI's documentation!
+BaiduMapAPI.base
 =======================================
 
 .. toctree::
-   :caption: Basic concepts
-   :hidden:
+   :maxdepth: 2
+   :caption: Contents:
 
-   api
-   dataset
-   base
-
-:doc:`api`
-    百度地图的API接口
-
-:doc:`dataset`
-    公共数据接口
+.. automodule:: BaiduMapAPI.base
+   :members:
 
 
-
-
-Indices and tables
-==================
 
 * :ref:`genindex`
 * :ref:`modindex`

@@ -6,7 +6,7 @@ A Simple Python Baidu Map API Library, make easy for you when you want to use ma
 
 It is Python Baidu Map API Library. We encapsulate it, and make it more easy for you.
 
-这里是[中文文档](https://github.com/shikanon/BaiduMapAPI/blob/master/README_ZH.md)
+This is [document](http://baidumapapi.shikanon.com/doc/)
 
 ## Installation
 
