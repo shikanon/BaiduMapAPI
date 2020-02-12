@@ -36,6 +36,7 @@ class RouteObject(object):
         self.time = 0 # 总时间
         self.price = 0 # 总价格
         self.main_vehicle = "步行" # 交通方式 
+        self.vehicle_name = []
         self.line_desc = "" # 描述
         self.lines = [] # 线路
     
@@ -68,6 +69,9 @@ class RouteObject(object):
                 else:
                     self.line_desc = line.line_desc
                 self.lines.append(line)
+
+                if line.vehicle_name != "":
+                    self.vehicle_name.append(line.vehicle_name)
         # Calculate the main modes of transportation, 
         # and take the longest distance as the main mode of transportation.
         sorted_vehicles = sorted(main_vehicle.items(),key=lambda x:x[1],reverse=True)
@@ -97,6 +101,7 @@ class LineObject(object):
         self.price = 0 # 价格
         self.line_desc = "" # 描述
         self.main_vehicle = "" # 交通方式 
+        self.vehicle_name = "" # 名称
     
     def parse(self, data):
         '''
@@ -116,6 +121,9 @@ class LineObject(object):
                     self.main_vehicle = pulic_vechicle_info[data["vehicle_info"]["detail"]["type"]]
             else:
                 self.main_vehicle = vehicle_info[vehicle_type]
+            if "detail" in data["vehicle_info"]:
+                if data["vehicle_info"]["detail"] is not None:
+                    self.vehicle_name = data["vehicle_info"]["detail"]["name"]
 
 
 
@@ -160,6 +168,14 @@ class TransitObject(object):
             route = RouteObject()
             route.parse(r)
             self.routes.append(route)
+        # 出发地
+        self.origin_city_id = data["origin"]["city_id"]
+        self.origin_city_name = data["origin"]["city_name"]
+        self.origin_location = (data["origin"]["location"]["lng"], data["origin"]["location"]["lat"])
+        # 目的地
+        self.destination_city_id = data["destination"]["city_id"]
+        self.destination_city_name = data["destination"]["city_name"]
+        self.destination_location = (data["destination"]["location"]["lng"], data["origin"]["location"]["lat"])
     
     def to_dataframe(self):
         '''
@@ -169,10 +185,17 @@ class TransitObject(object):
         n = 1
         for r in self.routes:
             data["id"].append(n)
+            data["origin_city_id"].append(self.origin_city_id)
+            data["origin_city_name"].append(self.origin_city_name)
+            data["origin_location"].append(self.origin_location)
+            data["destination_city_id"].append(self.destination_city_id)
+            data["destination_city_name"].append(self.destination_city_name)
+            data["destination_location"].append(self.destination_location)
             data["distance"].append(r.distance)
             data["duration"].append(r.time)
             data["price"].append(r.price)
             data["main_vehicle"].append(r.main_vehicle)
+            data["vehicle_name"].append(r.vehicle_name)
             data["description"].append(r.line_desc)
         return pd.DataFrame(data)
 

@@ -13,5 +13,6 @@ def test_TransitObject():
     assert trans.total_line == 99
     df = trans.to_dataframe()
     assert len(df) == 10
-    df.to_csv("test.csv",encoding="utf-8")
+    df.to_csv("test.txt",sep="\t",encoding="utf-8")
+
     
