@@ -1,5 +1,5 @@
 # Byte-compiled / optimized / DLL files
-__pycache__/
+*__pycache__/
 *.py[cod]
 *$py.class
 
@@ -104,6 +104,8 @@ venv.bak/
 .mypy_cache/
 *.ipynb_checkpoints/
 data-cache/
+package-lock.json
+node_modules
 
 # virtual 
 venv/

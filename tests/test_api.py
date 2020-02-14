@@ -3,26 +3,49 @@
 import json
 import pytest
 
-from .constant import AK, SK, AK_whitelist
+from constant import AK, SK, AK_whitelist
 from BaiduMapAPI.api import MapDirection, RouteMatrix, SearchPlace, Geocoder, CoordTrans
 from BaiduMapAPI.base import POI
 
-def test_MapDirection():
+def test_MapDirection_Transit():
     direction = MapDirection(AK, SK)
     origin = "23.137903,113.34348"
     destination = "22.544383,114.062203"
     coord_type = "wgs84"
-    content = direction.transit(origin, destination, coord_type=coord_type)
+    # 测试交通工具
+    content = direction._get_raw_transit(origin, destination, coord_type=coord_type)
     result = json.loads(content)
     assert result["status"] == 0
+    TransitObject = direction.transit(origin, destination, coord_type=coord_type)
+    print(TransitObject)
+    assert len(TransitObject.to_dataframe().columns) == 13
 
-    content = direction.riding(origin, destination, coord_type=coord_type)
+def test_MapDirection_Driving():
+    direction = MapDirection(AK, SK)
+    origin = "23.137903,113.34348"
+    destination = "22.544383,114.062203"
+    coord_type = "wgs84"
+    # 测试自驾出行
+    content = direction._get_raw_driving(origin, destination, coord_type=coord_type)
     result = json.loads(content)
     assert result["status"] == 0
+    DriveObject = direction.driving(origin, destination, coord_type=coord_type)
+    print(DriveObject)
+    assert len(DriveObject.to_dataframe().columns) == 8
 
-    content = direction.driving(origin, destination, coord_type=coord_type)
+
+def test_MapDirection_Riding():
+    direction = MapDirection(AK, SK)
+    origin = "23.137903,113.34348"
+    destination = "23.344383,113.362203"
+    coord_type = "wgs84"
+    # 测试骑行
+    content = direction._get_raw_riding(origin, destination, coord_type=coord_type)
     result = json.loads(content)
     assert result["status"] == 0
+    TransitObject = direction.riding(origin, destination, coord_type=coord_type)
+    print(TransitObject)
+    assert len(TransitObject.to_dataframe().columns) == 13
 
 
 def test_RouteMatrix():

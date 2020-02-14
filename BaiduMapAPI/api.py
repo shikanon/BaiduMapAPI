@@ -8,7 +8,7 @@ import os
 from BaiduMapAPI import checkAK
 from BaiduMapAPI import common
 from BaiduMapAPI.globals import HOST
-from BaiduMapAPI.base import POI
+from BaiduMapAPI.base import POI, TransitObject, DriveObject, parse_object
 
 __all__ = ['APIBase', 'MapDirection', 'OverseasDirection', 'OverseasDirection', 
             'RouteMatrix', 'SearchPlace', 'Geocoder']
@@ -30,6 +30,9 @@ class MapDirection(APIBase):
     Direction API, include transit, riding and driving. It only support Areas of China. If you want
     to watch other places, you can use the class of OverseasDirection.
     '''
+    def __init__(self, ak, sk):
+        self.TransitObject = TransitObject()
+        APIBase.__init__(self, ak, sk)
 
     def _getPayload(self, origin, destination, **kwargs):
         orig = common.convertCoord(origin)
@@ -40,8 +43,8 @@ class MapDirection(APIBase):
             payload.update(kwargs)
         return payload
 
-
-    def transit(self, origin, destination, **kwargs):
+    
+    def _get_raw_transit(self, origin, destination, **kwargs):
         '''get Public transit route direction.
 
         Parameters:
@@ -64,8 +67,29 @@ class MapDirection(APIBase):
         print("Direction transit URL: ", self.encry.url)
         return content
 
+    @parse_object(TransitObject)
+    def transit(self, origin, destination, **kwargs):
+        '''get Public transit route direction.
 
-    def riding(self, origin, destination, **kwargs):
+        Parameters:
+
+            origin : string, include "latitude,longitude", 
+            for exmaple: guangzhou coordinate value is "23.137903,113.34348",  
+                    
+            destination : string, include "latitude,longitude", 
+            for exmaple: guangzhou coordinate value is "23.137903,113.34348",
+    
+        Returns:
+
+            TransitObject: TransitObject, transit object include all routes
+            information.
+
+        site: http://lbsyun.baidu.com/index.php?title=webapi/direction-api-v2
+        '''
+        return self._get_raw_transit(origin, destination, **kwargs)
+
+
+    def _get_raw_riding(self, origin, destination, **kwargs):
         '''
         get riding route direction.
 
@@ -88,9 +112,34 @@ class MapDirection(APIBase):
         content = self.encry.get(HOST, urlPath, payload)
         print("Direction riding URL: ", self.encry.url)
         return content
+
+
+    def riding(self, origin, destination, **kwargs):
+        '''
+        get riding route direction.
+
+        parameter:
+
+            origin : string, include "latitude,longitude", 
+            for exmaple: guangzhou coordinate value is "23.137903,113.34348",
+
+            destination : string, include "latitude,longitude", 
+            for exmaple: guangzhou coordinate value is "23.137903,113.34348",
+        
+        Returns:
+
+            TransitObject: TransitObject, transit object include all routes
+            information.
+
+        site: http://lbsyun.baidu.com/index.php?title=webapi/direction-api-v2
+        '''
+        content = self._get_raw_riding(origin, destination, **kwargs)
+        common.check_response(content)
+        self.TransitObject.parse(content)
+        return self.TransitObject
     
     
-    def driving(self, origin, destination, **kwargs):
+    def _get_raw_driving(self, origin, destination, **kwargs):
         '''
         get driving route direction.
 
@@ -113,6 +162,28 @@ class MapDirection(APIBase):
         content = self.encry.get(HOST, urlPath, payload)
         print("Direction driving URL: ", self.encry.url)
         return content
+
+    @parse_object(DriveObject)
+    def driving(self, origin, destination, **kwargs):
+        '''
+        get driving route direction.
+
+        parameter:
+
+            origin : string, include "latitude,longitude", 
+            for exmaple: guangzhou coordinate value is "23.137903,113.34348",
+
+            destination : string, include "latitude,longitude", 
+            for exmaple: guangzhou coordinate value is "23.137903,113.34348",
+
+        Returns:
+
+            DriveObject: DriveObject, transit object include all routes
+            information.
+
+        site: http://lbsyun.baidu.com/index.php?title=webapi/direction-api-v2
+        '''
+        return self._get_raw_driving(origin, destination, **kwargs)
 
 
 

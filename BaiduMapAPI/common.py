@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*- 
+import json
 
 __all__ = ["convertCoord", "convertBatchCoord", "expandUp"]
 
@@ -49,3 +50,10 @@ def expandUp(value, key):
             else:
                 res[key+"_"+str(i)] = value[i]
     return res
+
+def check_response(content):
+    result = json.loads(content)
+    if "status" not in result:
+        raise KeyError(content)
+    if result["status"] != 0:
+        raise ValueError(content)

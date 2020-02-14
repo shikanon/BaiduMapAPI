@@ -1,9 +1,18 @@
-baidumapapi
+============
+BaiduMapAPI
 ============
 
 A Simple Python Baidu Map API Library, make easy for you when you want to use map data.
 
 It is Python Baidu Map API Library. We encapsulate it, and make it more easy for you.
+
+
+Install
+=======
+
+The quick way::
+
+    pip install scrapy
 
 
 Exmaple
@@ -12,19 +21,22 @@ Exmaple
 Query the transit info
 
 .. code-block:: python
+    :linenos:
+
     direction = MapDirection(AK, SK)
     origin = "23.137903,113.34348"
     destination = "22.544383,114.062203"
     coord_type = "wgs84"
-    content = direction.transit(origin, destination, coord_type=coord_type)
-    result = json.loads(content)
-    print(result)
+    result = direction.transit(origin, destination, coord_type=coord_type)
+    print(result.to_dataframe())
 
 
 
 This exmaple of getting all street of china.
 
 .. code-block:: python
+    :linenos:
+
     df = pd.read_csv("http://baidumapapi.shikanon.com/data/ChUnit2017.csv", encoding="utf-8")
     df["lat"] = 0.0
     df["lng"] = 0.0

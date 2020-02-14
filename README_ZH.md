@@ -32,9 +32,8 @@ direction = MapDirection(AK, SK)
 origin = "23.137903,113.34348"
 destination = "22.544383,114.062203"
 coord_type = "wgs84"
-content = direction.transit(origin, destination, coord_type=coord_type)
-result = json.loads(content)
-print(result)
+result = direction.transit(origin, destination, coord_type=coord_type)
+print(result.to_dataframe())
 ```
 
 获取全国街道的数据
