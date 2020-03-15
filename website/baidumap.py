@@ -30,6 +30,8 @@ class DataBase:
             main_vehicle varchar(255),
             vehicle_list varchar(255),
             description TEXT,
+            steps_distance TEXT,
+            steps_duration TEXT,
             PRIMARY KEY ( `id` )
         )DEFAULT CHARSET=utf8 ;
         '''
@@ -46,13 +48,15 @@ class DataBase:
             transit_type, fid, origin_city_id, origin_city_name, origin_location_lat,
             origin_location_lng, destination_city_id, destination_city_name, 
             destination_location_lat, destination_location_lng, distance,
-            duration, price, main_vehicle, vehicle_list, description
+            duration, price, main_vehicle, vehicle_list, description,
+            steps_distance, steps_duration
         )
         values (
             :transit_type, :fid, :origin_city_id, :origin_city_name, :origin_location_lat,
             :origin_location_lng, :destination_city_id, :destination_city_name, 
             :destination_location_lat, :destination_location_lng, :distance,
-            :duration, :price, :main_vehicle, :vehicle_list, :description
+            :duration, :price, :main_vehicle, :vehicle_list, :description,
+            :steps_distance, :steps_duration
         )
         '''
         self.record_db.bulk_query(insert_sql, *records)
@@ -73,7 +77,7 @@ class BaiduMap:
         # 火车优先
         for o_loc in self.origin:
             for d_loc in self.destination:
-                data = self.dirction.transit(o_loc, d_loc, tactics_intercity=0, trans_type_intercity=0)
+                data = self.dirction.transit(o_loc, d_loc, tactics_intercity=0, trans_type_intercity=0, coord_type="wgs84")
                 data = data.to_dict()
                 result = list()
                 for d in data:
@@ -89,7 +93,7 @@ class BaiduMap:
         # 飞机优先
         for o_loc in self.origin:
             for d_loc in self.destination:
-                data = self.dirction.transit(o_loc, d_loc, tactics_intercity=0, trans_type_intercity=1)
+                data = self.dirction.transit(o_loc, d_loc, tactics_intercity=0, trans_type_intercity=1, coord_type="wgs84")
                 data = data.to_dict()
                 result = list()
                 for d in data:
@@ -105,7 +109,7 @@ class BaiduMap:
         # 巴士
         for o_loc in self.origin:
             for d_loc in self.destination:
-                data = self.dirction.transit(o_loc, d_loc, tactics_intercity=0, trans_type_intercity=2)
+                data = self.dirction.transit(o_loc, d_loc, tactics_intercity=0, trans_type_intercity=2, coord_type="wgs84")
                 data = data.to_dict()
                 result = list()
                 for d in data:

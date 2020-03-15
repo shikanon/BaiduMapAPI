@@ -13,5 +13,5 @@ def test_BaiduMap():
     db.reset()
     bmap = BaiduMap(AK, SK)
     bmap.load_data("40.056878,116.30815","31.222965,121.505821")
-    result = [i for i in bmap.get_bus_data()]
+    result = [i for i in bmap.get_train_data()]
     db.insert_transit(result)

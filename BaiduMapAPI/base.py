@@ -149,7 +149,9 @@ class TransitObject(object):
                 "price": r["price"],
                 "main_vehicle": r["main_vehicle"],
                 "vehicle_list": r["vehicle_list"],
-                "description": r["description"]
+                "description": r["description"],
+                "steps_distance": r["steps_distance"],
+                "steps_duration": r["steps_duration"],
             }
             result.append(data)
         return result
@@ -174,6 +176,8 @@ class TransitObject(object):
             data["main_vehicle"].append(r["main_vehicle"])
             data["vehicle_list"].append(r["vehicle_list"])
             data["description"].append(r["description"])
+            data["steps_distance"].append(r["steps_distance"])
+            data["steps_duration"].append(r["steps_duration"])
         return pd.DataFrame(data)
 
 
@@ -209,7 +213,9 @@ class TransitObject(object):
             "price":        0, # 总价格
             "vehicle":      "步行", # 交通方式
             "vehicle_list": "", # 交通工具列表
-            "description":  "" # 描述
+            "description":  "", # 描述
+            "steps_distance": "", # 分段距离
+            "steps_duration": "" # 分段时间
         }
         result["distance"] = data["distance"]
         result["duration"] = data["duration"]
@@ -224,7 +230,8 @@ class TransitObject(object):
                 if line.main_vehicle in main_vehicle:
                     main_vehicle[line.main_vehicle] += line.distance
                 else:
-                    main_vehicle[line.main_vehicle] = line.time
+                    main_vehicle[line.main_vehicle] = line.distance
+
                 if result["description"]:
                     result["description"] = result["description"] + "; " + line.line_desc
                 else:
@@ -235,6 +242,16 @@ class TransitObject(object):
                     result["vehicle_list"] = result["vehicle_list"] + "; " + line.vehicle_name
                 else:
                     result["vehicle_list"] = line.vehicle_name
+
+                if result["steps_distance"]:
+                    result["steps_distance"] = result["steps_distance"] + "; " + str(line.distance)
+                else:
+                    result["steps_distance"] = str(line.distance)
+
+                if result["steps_duration"]:
+                    result["steps_duration"] = result["steps_duration"] + "; " + str(line.time)
+                else:
+                    result["steps_duration"] = str(line.time)
         # Calculate the main modes of transportation, 
         # and take the longest distance as the main mode of transportation.
         sorted_vehicles = sorted(main_vehicle.items(),key=lambda x:x[1],reverse=True)
