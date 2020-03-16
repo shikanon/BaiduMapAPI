@@ -1,8 +1,14 @@
 #coding:utf-8
 import json
 import records
+
+from util import recovsys, logsys
 from BaiduMapAPI.api import SearchPlace, MapDirection
 from BaiduMapAPI.base import TransitObject
+
+
+logger = logsys("baidumap",level=10).getlogger()
+
 
 class DataBase:
     def __init__(self, scheme):
@@ -67,6 +73,7 @@ class BaiduMap:
         self.destination = list()
         self.place = SearchPlace(ak, sk)
         self.dirction = MapDirection(ak, sk)
+        self.recov = recovsys()
         
     
     def load_data(self, origin, destination):
@@ -74,49 +81,79 @@ class BaiduMap:
         self.destination.append(destination)
 
     def get_train_data(self):
+        self.recov.clean()
         # 火车优先
         for o_loc in self.origin:
             for d_loc in self.destination:
-                data = self.dirction.transit(o_loc, d_loc, tactics_intercity=0, trans_type_intercity=0, coord_type="wgs84")
-                data = data.to_dict()
                 result = list()
-                for d in data:
-                    d["transit_type"] = "火车"
-                    d["origin_location_lat"] = d["origin_location"][0]
-                    d["origin_location_lng"] = d["origin_location"][1]
-                    d["destination_location_lat"] =d["destination_location"][0]
-                    d["destination_location_lng"] = d["origin_location"][1]
-                    result.append(d)
+                try:
+                    data = self.dirction.transit(o_loc, d_loc, tactics_intercity=0, trans_type_intercity=0, coord_type="wgs84")
+                    data = data.to_dict()
+                    for d in data:
+                        d["transit_type"] = "火车"
+                        d["origin_location_lat"] = d["origin_location"][0]
+                        d["origin_location_lng"] = d["origin_location"][1]
+                        d["destination_location_lat"] =d["destination_location"][0]
+                        d["destination_location_lng"] = d["origin_location"][1]
+                        result.append(d)
+                    logger.info("完成{}到{}的数据写入".format(o_loc, d_loc))
+                except Exception as e:
+                    back_data = {
+                        "origin": o_loc,
+                        "destination": d_loc
+                    }
+                    self.recov.backup(back_data)
+                    logger.error("起始地: %s, 目的地: %s"%(o_loc, d_loc))
                 yield result
 
     def get_plane_data(self):
+        self.recov.clean()
         # 飞机优先
         for o_loc in self.origin:
             for d_loc in self.destination:
-                data = self.dirction.transit(o_loc, d_loc, tactics_intercity=0, trans_type_intercity=1, coord_type="wgs84")
-                data = data.to_dict()
                 result = list()
-                for d in data:
-                    d["transit_type"] = "飞机"
-                    d["origin_location_lat"] = d["origin_location"][0]
-                    d["origin_location_lng"] = d["origin_location"][1]
-                    d["destination_location_lat"] =d["destination_location"][0]
-                    d["destination_location_lng"] = d["origin_location"][1]
-                    result.append(d)
+                try:
+                    data = self.dirction.transit(o_loc, d_loc, tactics_intercity=0, trans_type_intercity=1, coord_type="wgs84")
+                    data = data.to_dict()
+                    for d in data:
+                        d["transit_type"] = "飞机"
+                        d["origin_location_lat"] = d["origin_location"][0]
+                        d["origin_location_lng"] = d["origin_location"][1]
+                        d["destination_location_lat"] =d["destination_location"][0]
+                        d["destination_location_lng"] = d["origin_location"][1]
+                        result.append(d)
+                    logger.info("完成{}到{}的数据写入".format(o_loc, d_loc))
+                except Exception:
+                    back_data = {
+                        "origin": o_loc,
+                        "destination": d_loc
+                    }
+                    self.recov.backup(back_data)
+                    logger.error("起始地: %s, 目的地: %s"%(o_loc,d_loc))
                 yield result
 
     def get_bus_data(self, departure=None):
+        self.recov.clean()
         # 巴士
         for o_loc in self.origin:
             for d_loc in self.destination:
-                data = self.dirction.transit(o_loc, d_loc, tactics_intercity=0, trans_type_intercity=2, coord_type="wgs84")
-                data = data.to_dict()
                 result = list()
-                for d in data:
-                    d["transit_type"] = "大巴"
-                    d["origin_location_lat"] = d["origin_location"][0]
-                    d["origin_location_lng"] = d["origin_location"][1]
-                    d["destination_location_lat"] =d["destination_location"][0]
-                    d["destination_location_lng"] = d["origin_location"][1]
-                    result.append(d)
+                try:
+                    data = self.dirction.transit(o_loc, d_loc, tactics_intercity=0, trans_type_intercity=2, coord_type="wgs84")
+                    data = data.to_dict()
+                    for d in data:
+                        d["transit_type"] = "大巴"
+                        d["origin_location_lat"] = d["origin_location"][0]
+                        d["origin_location_lng"] = d["origin_location"][1]
+                        d["destination_location_lat"] =d["destination_location"][0]
+                        d["destination_location_lng"] = d["origin_location"][1]
+                        result.append(d)
+                    logger.info("完成{}到{}的数据写入".format(o_loc, d_loc))
+                except Exception:
+                    back_data = {
+                        "origin": o_loc,
+                        "destination": d_loc
+                    }
+                    self.recov.backup(back_data)
+                    logger.error("起始地: %s, 目的地: %s"%(o_loc,d_loc))
                 yield result

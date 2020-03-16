@@ -26,6 +26,7 @@ pulic_vechicle_info = {
     12: "机场轨道交通",
     13: "机场轨道交通",
     14: "机场轨道交通",
+    15: "其他",
 }
 
 road_type_info = {
@@ -89,7 +90,7 @@ class TransitLineObject(object):
         if "vehicle_info" in data:
             vehicle_type = data["vehicle_info"]["type"]
             if vehicle_type == 3 and "detail" in data["vehicle_info"]:
-                    self.main_vehicle = pulic_vechicle_info[data["vehicle_info"]["detail"]["type"]]
+                self.main_vehicle = pulic_vechicle_info[data["vehicle_info"]["detail"]["type"]]
             else:
                 self.main_vehicle = vehicle_info[vehicle_type]
             if "detail" in data["vehicle_info"]:
