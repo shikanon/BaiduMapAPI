@@ -3,7 +3,7 @@ aniso8601==7.0.0
 async-exit-stack==1.0.1
 async-generator==1.10
 attrs==19.3.0
-certifi==2018.11.29
+certifi==2022.12.7
 cffi==1.14.0
 chardet==3.0.4
 Click==7.0
